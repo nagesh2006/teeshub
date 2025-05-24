@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TeesHub Cart | Your Shopping Cart</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Custom color scheme removed to revert to default DaisyUI light theme */
+
+    /* Ensure dropdown text is readable if it defaults to a dark theme text color on a light bg */
+    .dropdown-content .card-body .text-base-content {
+        color: initial; /* Or specific color for light theme text if needed */
+    }
+    .dropdown-content .card-body .text-primary {
+        /* DaisyUI default primary color will apply */
+    }
+  </style>
+</head>
+<body class="bg-base-100 text-base-content font-sans">
+
+  <header class="bg-neutral text-neutral-content shadow-lg sticky top-0 z-50">
+    <div class="navbar container mx-auto">
+      <div class="navbar-start">
+        <a href="index.html" class="btn btn-ghost text-xl normal-case">
+          <span class="text-primary">TeesHub</span>
+        </a>
+      </div>
+      <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+          <li><a href="index.html" class="hover:text-primary">Home</a></li>
+          <li><a href="Shop.html" class="hover:text-primary">Shop</a></li>
+          <li><a href="index.html#contact-section" class="hover:text-primary">Contact</a></li>
+        </ul>
+      </div>
+      <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-circle">
+            <div class="indicator">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+              <span class="badge badge-sm badge-primary indicator-item cart-count">0</span>
+            </div>
+          </label>
+          <div tabindex="0" class="mt-3 z-[1] card card-compact dropdown-content w-72 md:w-80 bg-base-100 shadow">
+            <div class="card-body p-4">
+              <h3 class="text-lg font-bold text-base-content mb-2">Your Cart</h3>
+              <div id="cart-dropdown-items" class="max-h-60 overflow-y-auto space-y-2 mb-2">
+                {/* Cart items will be populated here by JavaScript */}
+              </div>
+              <div id="cart-dropdown-empty" class="text-center py-4 hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-base-content/40 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                <p class="text-base-content/70">Your cart is empty.</p>
+                <a href="Shop.html" class="link link-primary text-sm mt-2">Start shopping!</a>
+              </div>
+              <div class="divider my-1"></div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-semibold text-base-content text-sm">Subtotal (<span class="cart-count">0</span> items):</span>
+                <span id="cart-dropdown-subtotal" class="font-bold text-primary text-md">$0.00</span>
+              </div>
+              <div class="card-actions mt-3">
+                <a href="Cart.html" class="btn btn-primary btn-block btn-sm">View Cart & Checkout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <label class="swap swap-rotate btn btn-ghost">
+          <input type="checkbox" id="theme-toggle" class="theme-controller" value="dark" />
+          <svg class="swap-on fill-current w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29l.71-.71A1,1,0,0,0,7.76,5.64l-.71.71A1,1,0,0,0,5.64,7.05ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM20,12a1,1,0,0,0-1-1H18a1,1,0,0,0,0,2h1A1,1,0,0,0,20,12ZM17,5.64a1,1,0,0,0-.71-.29,1,1,0,0,0-.7.29l-.71.71a1,1,0,1,0,1.41,1.41l.71-.71A1,1,0,0,0,17,5.64ZM12,15a5,5,0,1,0,5-5A5,5,0,0,0,12,15Zm0,2a3,3,0,1,1,3-3A3,3,0,0,1,12,17Z"/></svg>
+          <svg class="swap-off fill-current w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/></svg>
+        </label>
+        <div class="dropdown dropdown-end lg:hidden">
+            <label tabindex="0" class="btn btn-ghost lg:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </label>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Shop.html">Shop</a></li>
+                <li><a href="index.html#contact-section">Contact</a></li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<main class="container mx-auto py-10 px-4">
+  <h1 class="text-3xl font-bold mb-6 text-center text-primary page-title">Your Shopping Cart</h1>
+  <div id="cart-items" class="space-y-4">
+    </div>
+
+  <div id="checkout-section" class="mt-8 bg-base-200 p-6 rounded-lg shadow hidden">
+    <h2 class="text-xl font-semibold mb-4">Customer Details</h2>
+    <div class="form-control mb-4">
+      <label class="label" for="custName"><span class="label-text">Full Name</span></label>
+      <input type="text" id="custName" class="input input-bordered w-full" required />
+    </div>
+    <div class="form-control mb-4">
+      <label class="label" for="custEmail"><span class="label-text">Email</span></label>
+      <input type="email" id="custEmail" class="input input-bordered w-full" required />
+    </div>
+    <div class="form-control mb-4">
+      <label class="label" for="custAddress"><span class="label-text">Address</span></label>
+      <textarea id="custAddress" class="textarea textarea-bordered w-full" rows="3" required></textarea>
+    </div>
+    
+    <h2 class="text-xl font-semibold mt-6 mb-4">Payment Method</h2>
+    <div class="form-control">
+      <label class="label cursor-pointer">
+        <span class="label-text">UPI</span> 
+        <input type="radio" name="payment-method" class="radio radio-primary" value="upi" checked />
+      </label>
+    </div>
+    <div class="form-control">
+      <label class="label cursor-pointer">
+        <span class="label-text">Credit/Debit Card</span> 
+        <input type="radio" name="payment-method" class="radio radio-primary" value="card" />
+      </label>
+    </div>
+    <div class="form-control">
+      <label class="label cursor-pointer">
+        <span class="label-text">Net Banking</span> 
+        <input type="radio" name="payment-method" class="radio radio-primary" value="netbanking" />
+      </label>
+    </div>
+
+    <div id="payment-details" class="mt-4">
+        <div id="upi-details" class="mt-4">
+            <div class="form-control mb-4">
+              <label class="label" for="upi-id"><span class="label-text">UPI ID</span></label>
+              <input type="text" id="upi-id" class="input input-bordered w-full" placeholder="yourname@ybl" />
+            </div>
+        </div>
+        <div id="card-details" class="mt-4 hidden">
+            <div class="form-control mb-4">
+              <label class="label" for="card-number"><span class="label-text">Card Number</span></label>
+              <input type="text" id="card-number" class="input input-bordered w-full" placeholder="1111-2222-3333-4444" />
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="form-control mb-4">
+                  <label class="label" for="expiry-date"><span class="label-text">Expiry Date</span></label>
+                  <input type="text" id="expiry-date" class="input input-bordered w-full" placeholder="MM/YY" />
+                </div>
+                <div class="form-control mb-4">
+                  <label class="label" for="cvv"><span class="label-text">CVV</span></label>
+                  <input type="text" id="cvv" class="input input-bordered w-full" placeholder="123" />
+                </div>
+            </div>
+        </div>
+        <div id="netbanking-details" class="mt-4 hidden">
+            <div class="form-control mb-4">
+                <label class="label" for="netbanking-bank"><span class="label-text">Select Bank</span></label>
+                <select class="select select-bordered w-full" id="netbanking-bank">
+                  <option disabled selected value="">Select your bank</option>
+                  <option>State Bank of India</option>
+                  <option>HDFC Bank</option>
+                  <option>ICICI Bank</option>
+                  <option>Axis Bank</option>
+                  <option>Other Bank</option>
+                </select>
+            </div>
+            <div class="form-control mb-4">
+              <label class="label" for="netbanking-acc-holder"><span class="label-text">Account Holder Name</span></label>
+              <input type="text" id="netbanking-acc-holder" class="input input-bordered w-full" placeholder="e.g., John Doe" />
+            </div>
+            <div class="form-control mb-4">
+              <label class="label" for="netbanking-userid"><span class="label-text">User ID / Customer ID</span></label>
+              <input type="text" id="netbanking-userid" class="input input-bordered w-full" placeholder="Enter your User ID" />
+            </div>
+            <div class="form-control mb-4">
+              <label class="label" for="netbanking-password"><span class="label-text">Password / PIN</span></label>
+              <input type="password" id="netbanking-password" class="input input-bordered w-full" placeholder="Enter your password (for simulation)" />
+            </div>
+            <p class="text-xs text-base-content/60 mt-2">Note: This is a simulated payment. Do not enter real banking details.</p>
+        </div>
+    </div>
+    <button id="checkoutButton" class="btn btn-primary w-full mt-6">Proceed to Checkout</button>
+  </div>
+
+  <div id="payment-simulation" class="mt-8 bg-base-200 p-6 rounded-lg shadow hidden">
+    <h2 class="text-xl font-semibold mb-4 text-center">Payment in Progress...</h2>
+    <div class="text-center">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+        <p class="mt-4">Please wait while we process your payment.</p>
+    </div>
+  </div>
+
+  <div id="order-success" class="mt-8 bg-base-200 p-6 rounded-lg shadow hidden text-center">
+    <svg class="w-16 h-16 text-success mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <h2 class="text-2xl font-bold mb-4 text-success">Order Placed Successfully!</h2>
+    <p class="mb-2">Thank you for your purchase.</p>
+    <p class="mb-6">Your order is being processed and you will receive a confirmation email shortly.</p>
+    <a href="Shop.html" class="btn btn-primary mt-6">Continue Shopping</a>
+    <a href="index.html" class="btn btn-outline btn-primary mt-6 ml-2">Go to Homepage</a>
+  </div>
+</main>
+
+<footer class="footer p-10 bg-neutral text-neutral-content">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-4">
+        <nav>
+            <h6 class="footer-title">TeesHub</h6>
+            <p class="w-3/4">Your one-stop shop for the trendiest t-shirts.</p>
+        </nav>
+        <nav>
+            <h6 class="footer-title">Quick Links</h6>
+            <a href="index.html" class="link link-hover">Home</a>
+            <a href="Shop.html" class="link link-hover">Shop</a>
+            <a href="Cart.html" class="link link-hover">Cart</a>
+            <a href="index.html#contact-section" class="link link-hover">Contact</a>
+        </nav>
+        <nav>
+            <h6 class="footer-title">Legal</h6>
+            <a href="privacy.html" class="link link-hover">Privacy policy</a>
+            <a href="terms.html" class="link link-hover">Terms of service</a>
+        </nav>
+        <nav>
+            <h6 class="footer-title">Social</h6>
+            <div class="grid grid-flow-col gap-4">
+              <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616v.064c0 2.298 1.634 4.212 3.796 4.649-.65.177-1.356.23-2.08.083.606 1.885 2.364 3.256 4.453 3.303-1.785 1.398-4.032 2.226-6.481 2.226-.423 0-.84-.025-1.25-.074 2.308 1.483 5.061 2.348 8.041 2.348 8.284 0 12.812-6.863 12.812-12.812 0-.195-.005-.39-.014-.583.881-.636 1.642-1.428 2.257-2.344z"></path></svg></a>
+              <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path></svg></a>
+              <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v2.385z"></path></svg></a>
+            </div>
+        </nav>
+    </div>
+    <div class="footer-center p-4 bg-neutral text-neutral-content">
+        <aside>
+          <p>&copy; <span id="currentYear"></span> TeesHub. All rights reserved.</p>
+        </aside>
+    </div>
+  </footer>
+
+
+<script>
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+  const themeToggle = document.getElementById('theme-toggle');
+  const htmlEl = document.documentElement;
+
+  function setThemeController(theme) {
+    htmlEl.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    themeToggle.checked = (theme === 'dark');
+  }
+  
+  const savedUserTheme = localStorage.getItem('theme');
+  const prefersUserDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (savedUserTheme) {
+    setThemeController(savedUserTheme);
+  } else if (prefersUserDark) {
+    setThemeController('dark');
+  } else {
+    htmlEl.setAttribute('data-theme', 'light');
+  }
+   if (htmlEl.getAttribute('data-theme') === 'light') {
+        themeToggle.checked = false;
+    }
+
+
+  themeToggle.addEventListener('change', () => {
+    setThemeController(themeToggle.checked ? 'dark' : 'light');
+  });
+
+  function getCart() {
+    const cartData = localStorage.getItem('teeshubCart');
+    return cartData ? JSON.parse(cartData) : {};
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem('teeshubCart', JSON.stringify(cart));
+    updateHeaderCartCount();
+    updateCartDropdown();
+    window.dispatchEvent(new StorageEvent('storage', { key: 'teeshubCart', newValue: JSON.stringify(cart) }));
+  }
+  
+  function updateHeaderCartCount() {
+    const cart = getCart();
+    const totalQty = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+    document.querySelectorAll('.cart-count').forEach(el => {
+      el.textContent = totalQty;
+    });
+  }
+
+  function updateCartDropdown() {
+        const cart = getCart();
+        const itemsContainer = document.getElementById('cart-dropdown-items');
+        const emptyMessage = document.getElementById('cart-dropdown-empty');
+        const subtotalElement = document.getElementById('cart-dropdown-subtotal');
+        let subtotal = 0;
+        const MAX_DROPDOWN_ITEMS = 3;
+
+        itemsContainer.innerHTML = '';
+
+        if (Object.keys(cart).length === 0) {
+            emptyMessage.style.display = 'block';
+            itemsContainer.style.display = 'none';
+            subtotal = 0;
+        } else {
+            emptyMessage.style.display = 'none';
+            itemsContainer.style.display = 'block';
+            let itemCount = 0;
+            for (const item of Object.values(cart)) {
+                subtotal += item.price * item.quantity;
+                if (itemCount < MAX_DROPDOWN_ITEMS) {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'flex items-center gap-2 p-1 rounded hover:bg-base-200 transition-colors';
+                    itemDiv.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="w-10 h-10 object-cover rounded">
+                        <div class="flex-grow min-w-0">
+                            <p class="text-sm font-medium text-base-content truncate" title="${item.name} ${item.selectedSize ? `(${item.selectedSize})` : ''}">${item.name} ${item.selectedSize ? `(${item.selectedSize})` : ''}</p>
+                            <p class="text-xs text-base-content/70">Qty: ${item.quantity} &times; $${item.price.toFixed(2)}</p>
+                        </div>
+                        <p class="text-sm font-semibold text-primary">$${(item.price * item.quantity).toFixed(2)}</p>
+                    `;
+                    itemsContainer.appendChild(itemDiv);
+                    itemCount++;
+                }
+            }
+            if (Object.keys(cart).length > MAX_DROPDOWN_ITEMS) {
+                 const moreItemsDiv = document.createElement('p');
+                 moreItemsDiv.className = 'text-xs text-center text-base-content/70 mt-1';
+                 moreItemsDiv.textContent = `+ ${Object.keys(cart).length - MAX_DROPDOWN_ITEMS} more items...`;
+                 itemsContainer.appendChild(moreItemsDiv);
+            }
+        }
+        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+        updateHeaderCartCount();
+    }
+
+  function renderCart() {
+    const cart = getCart();
+    const cartItemsContainer = document.getElementById('cart-items');
+    cartItemsContainer.innerHTML = '';
+
+    if (Object.keys(cart).length === 0) {
+      cartItemsContainer.innerHTML = `
+        <div class="text-center py-10">
+          <svg class="mx-auto h-12 w-12 text-base-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <p class="text-xl text-base-content/70 mt-4 mb-6">Your cart is empty.</p>
+          <a href="Shop.html" class="btn btn-primary">Continue Shopping</a>
+        </div>`;
+      document.getElementById('checkout-section').style.display = 'none';
+      return;
+    }
+
+    document.getElementById('checkout-section').style.display = 'block';
+
+    for (const [cartKey, item] of Object.entries(cart)) {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'card bg-base-200 shadow p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4';
+      cardEl.innerHTML = `
+        <div class="flex items-center gap-4 w-full sm:w-auto">
+            <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+            <div class="flex-grow">
+                <h3 class="text-lg font-semibold">${item.name}</h3>
+                ${item.selectedSize ? `<p class="text-sm text-base-content/70">Size: ${item.selectedSize}</p>` : ''}
+                <p class="text-sm text-base-content/70">Price: $${item.price.toFixed(2)}</p>
+                <p class="text-sm text-base-content/70">Quantity: ${item.quantity}</p>
+            </div>
+        </div>
+        <button class="btn btn-error btn-sm remove-btn self-end sm:self-center" data-product-id="${item.id}">Remove</button>
+      `;
+      cartItemsContainer.appendChild(cardEl);
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-btn')) {
+        const cartKeyToRemove = e.target.dataset.productId;
+        const cart = getCart();
+        delete cart[cartKeyToRemove];
+        saveCart(cart);
+        renderCart();
+    }
+  });
+  
+  document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        document.getElementById('upi-details').style.display = 'none';
+        document.getElementById('card-details').style.display = 'none';
+        document.getElementById('netbanking-details').style.display = 'none';
+        
+        if (document.getElementById(`${e.target.value}-details`)) {
+            document.getElementById(`${e.target.value}-details`).style.display = 'block';
+        }
+    });
+  });
+
+  document.getElementById('checkoutButton').addEventListener('click', () => {
+    const name = document.getElementById('custName').value.trim();
+    const email = document.getElementById('custEmail').value.trim();
+    const address = document.getElementById('custAddress').value.trim();
+
+    if (!name || !email || !address) {
+      alert('Please fill in all customer details.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+    
+    const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+
+    if (selectedPaymentMethod === 'upi') {
+        const upiId = document.getElementById('upi-id').value.trim();
+        if (!upiId) { alert('Please enter your UPI ID.'); return; }
+        if (!/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(upiId)) { alert('Please enter a valid UPI ID format (e.g., yourname@ybl).'); return; }
+    } else if (selectedPaymentMethod === 'card') {
+        const cardNumber = document.getElementById('card-number').value.trim();
+        const expiryDate = document.getElementById('expiry-date').value.trim();
+        const cvv = document.getElementById('cvv').value.trim();
+        if (!cardNumber || !expiryDate || !cvv) { alert('Please fill in all card payment details.'); return; }
+        if (!/^\d{4}-?\d{4}-?\d{4}-?\d{4}$/.test(cardNumber)) { alert('Please enter a valid card number format (e.g., 1111-2222-3333-4444 or 16 digits).'); return; }
+        if (!/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(expiryDate)) { alert('Please enter a valid expiry date format (MM/YY).'); return; }
+        if (!/^\d{3,4}$/.test(cvv)) { alert('Please enter a valid CVV (3 or 4 digits).'); return; }
+    } else if (selectedPaymentMethod === 'netbanking') {
+        const bank = document.getElementById('netbanking-bank').value;
+        const accHolder = document.getElementById('netbanking-acc-holder').value.trim();
+        const userId = document.getElementById('netbanking-userid').value.trim();
+        if (bank === "" || !accHolder || !userId ) { alert('Please fill in all netbanking details, including selecting a bank and providing account holder & user ID.'); return; }
+    }
+    
+    document.getElementById('checkout-section').style.display = 'none';
+    document.getElementById('cart-items').style.display = 'none';
+    const pageTitle = document.querySelector('.page-title');
+    if(pageTitle) pageTitle.style.display = 'none';
+
+    document.getElementById('payment-simulation').style.display = 'block';
+
+    setTimeout(() => {
+        document.getElementById('payment-simulation').style.display = 'none';
+        document.getElementById('order-success').style.display = 'block';
+        saveCart({});
+        updateHeaderCartCount(); 
+        updateCartDropdown();
+    }, 3000);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderCart();
+    updateHeaderCartCount();
+    updateCartDropdown();
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'teeshubCart') {
+            updateHeaderCartCount();
+            updateCartDropdown();
+            if (document.body.contains(document.getElementById('cart-items'))) {
+                 renderCart();
+            }
+        }
+    });
+  });
+</script>
+
+</body>
+</html>
